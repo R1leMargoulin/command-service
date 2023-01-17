@@ -23,9 +23,46 @@ db.mongoose.connect(`mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_POR
 })
 
 //routes
-app.get("/notifs/ping", (req,res) =>{
+app.get("/commands/ping", (req,res) =>{
     res.status(200).json({message:'pong'});
 });
+
+
+app.post("/commands/send", (req,res)=>{
+    console.log(req.body)
+    var newCommand = new Object()
+    if('deliveryId' in req.body){
+        var newCommand = {
+            id:req.body.id,
+            customerId:req.body.customeId,
+            restorantId:req.body.restorantId,
+            date:req.body.date,
+            isPaid:req.body.isPaid,
+            deliveryId:req.body.deliveryId,
+            articles:req.body.articles
+        }
+    }
+    else{
+        var newCommand = {
+            id:req.body.id,
+            customerId:req.body.customeId,
+            restorantId:req.body.restorantId,
+            date:req.body.date,
+            isPaid:req.body.isPaid,
+            articles:req.body.articles
+        }
+    }
+
+    //sensors.push(newSensor);
+    db.commands.insertMany(newCommand)
+
+    res.status(200).json({message:`la command a bien été passée, numéro de commande: ${newCommand.id_user}`})
+    //console.log(items)
+
+    
+});
+
+
 
 
 app.listen(process.env.SERVER_PORT, ()=>{

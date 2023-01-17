@@ -7,7 +7,7 @@ const commands = mongoose.model(
             type:String,
             required:true
         },
-        customer_id:{
+        customerId:{
             type:String,
             required:true
         },
