@@ -3,10 +3,6 @@ const mongoose= require('mongoose');
 const commands = mongoose.model(
     "commands",
     new mongoose.Schema({
-        id:{
-            type:String,
-            required:true
-        },
         customerId:{
             type:String,
             required:true
@@ -19,17 +15,18 @@ const commands = mongoose.model(
             type: Date,
             required: true
         },
-        isPaid:{
-            type: Boolean,
-            required: true
-        },
-        deliveryId:{
-            type: String,
-        },
         articles:{
-            type:Array,
+            menus:{
+                type:Array
+            },
+            items:{
+                type:Array
+            }
+        },
+        price:{
+            type: Number,
             required:true
-        }
+        },
     })
 );
 

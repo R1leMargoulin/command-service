@@ -22,41 +22,49 @@ db.mongoose.connect(`mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_POR
     process.exit()
 })
 
+
+
+
 //routes
 app.get("/commands/ping", (req,res) =>{
     res.status(200).json({message:'pong'});
 });
 
 
+app.get("/commands/:id_user", (req,res)=>{
+    var id_user = req.params.id_user;
+    console.log(id_user)
+    db.commands.find({customerId:id_user}).then((e)=>{
+            res.status(200).json(e);
+        }).catch(()=>{
+            res.status(404).json({message: 'no command found'});
+        })
+});
+
+
+
+
+
 app.post("/commands/send", (req,res)=>{
     console.log(req.body)
-    var newCommand = new Object()
-    if('deliveryId' in req.body){
-        var newCommand = {
-            id:req.body.id,
-            customerId:req.body.customeId,
-            restorantId:req.body.restorantId,
-            date:req.body.date,
-            isPaid:req.body.isPaid,
-            deliveryId:req.body.deliveryId,
-            articles:req.body.articles
-        }
-    }
-    else{
-        var newCommand = {
-            id:req.body.id,
-            customerId:req.body.customeId,
-            restorantId:req.body.restorantId,
-            date:req.body.date,
-            isPaid:req.body.isPaid,
-            articles:req.body.articles
-        }
+
+    var newCommand = {
+        customerId:req.body.customerId,
+        restorantId:req.body.restorantId,
+        date:req.body.date,
+        articles:req.body.articles,
+        price:req.body.price
     }
 
     //sensors.push(newSensor);
-    db.commands.insertMany(newCommand)
+    console.log(newCommand)
+    db.commands.insertMany(newCommand).then(()=>{
+    res.status(200).json({message:`la command a bien été passée`})
+    }).catch(e=>{
+        res.status(404).json({message:`problème`})
+    })
 
-    res.status(200).json({message:`la command a bien été passée, numéro de commande: ${newCommand.id_user}`})
+   
     //console.log(items)
 
     

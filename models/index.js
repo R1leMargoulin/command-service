@@ -3,5 +3,5 @@ mongoose.Promise = global.Promise;
 
 const db = {}
 db.mongoose = mongoose
-db.notifs = require('./commands.model');
+db.commands = require('./commands.model');
 module.exports = db
