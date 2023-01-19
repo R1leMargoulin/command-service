@@ -22,7 +22,12 @@ db.mongoose.connect(`mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_POR
     process.exit()
 })
 
-
+app.get("/commands/allactivecommands", async(req,res)=>{
+    await db.commands.find({isInDelivery:false, isAcceptedByRestaurateur:true}).then((rep) => {
+        console.log("oui")
+        res.send(rep);
+    })
+});
 
 
 //routes
@@ -48,6 +53,12 @@ app.patch('/commands/:commandid', async(req, res)=> {
 })
 
 
+app.patch('/command/takedelivery/:commandid', async(req, res)=>{
+    console.log(req.params)
+    await db.commands.findOneAndUpdate({_id:req.params.commandid}, {isInDelivery:true});
+
+    res.status(204).send();
+})
 
 
 app.post("/commands/send", (req,res)=>{
@@ -59,7 +70,12 @@ app.post("/commands/send", (req,res)=>{
         date:req.body.date,
         articles:req.body.articles,
         price:req.body.price, 
-        isPaid:false
+        adress:req.body.adress,
+        city:req.body.city,
+        codePostal:req.body.codePostal,
+        isPaid:false, 
+        isAcceptedByRestaurateur: false,
+        isInDelivery: false
     }
 
     //sensors.push(newSensor);

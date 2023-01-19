@@ -27,6 +27,18 @@ const commands = mongoose.model(
             type: Number,
             required:true
         },
+        adress:{
+            type:String,
+            required:true
+        },
+        city:{
+            type:String,
+            required:true
+        },
+        codePostal:{
+            type:String,
+            required:true
+        },
         isPaid:{
             type:Boolean,
             required:true
