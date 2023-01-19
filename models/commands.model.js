@@ -30,6 +30,14 @@ const commands = mongoose.model(
         isPaid:{
             type:Boolean,
             required:true
+        }, 
+        isAcceptedByRestaurateur:{
+            type:Boolean,
+            required:true
+        },
+        isInDelivery:{
+            type:Boolean,
+            required:true
         }
     })
 );
