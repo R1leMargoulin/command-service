@@ -27,6 +27,10 @@ const commands = mongoose.model(
             type: Number,
             required:true
         },
+        isPaid:{
+            type:Boolean,
+            required:true
+        }
     })
 );
 

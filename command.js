@@ -41,26 +41,34 @@ app.get("/commands/:id_user", (req,res)=>{
         })
 });
 
+app.patch('/commands/:commandid', async(req, res)=> {
+    console.log(req.params)
+    await db.commands.findByIdAndUpdate({_id:req.params.commandid}, {isPaid:true});
+    res.status(200).send();
+})
 
 
 
 
 app.post("/commands/send", (req,res)=>{
-    console.log(req.body)
+    console.table(req.body)
 
     var newCommand = {
         customerId:req.body.customerId,
-        restorantId:req.body.restorantId,
+        restorantId:req.body.customerId,
         date:req.body.date,
         articles:req.body.articles,
-        price:req.body.price
+        price:req.body.price, 
+        isPaid:false
     }
 
     //sensors.push(newSensor);
-    console.log(newCommand)
-    db.commands.insertMany(newCommand).then(()=>{
-    res.status(200).json({message:`la command a bien été passée`})
+    console.log(newCommand.articles)
+    db.commands.insertMany(newCommand).then((rep)=>{ 
+       
+    res.status(200).json({message:`la command a bien été passée`, commandid:rep[0]._id})
     }).catch(e=>{
+        console.log(e)
         res.status(404).json({message:`problème`})
     })
 
